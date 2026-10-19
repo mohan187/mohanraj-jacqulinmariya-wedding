@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CalendarDays, Check, Clock3, Heart, MapPin, Music2, X, Volume2, VolumeX } from 'lucide-react'
 
 const details = [
@@ -35,6 +35,23 @@ export default function Page() {
   const [musicPlaying, setMusicPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [musicUnavailable, setMusicUnavailable] = useState(false)
+
+  useEffect(() => {
+    const root = document.documentElement
+    const body = document.body
+    const previousRootOverflow = root.style.overflow
+    const previousBodyOverflow = body.style.overflow
+
+    if (showIntro) {
+      root.style.overflow = 'hidden'
+      body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      root.style.overflow = previousRootOverflow
+      body.style.overflow = previousBodyOverflow
+    }
+  }, [showIntro])
 
   function enterInvitation() {
     // Start the music from the guest's click, then go directly to the invitation.
@@ -91,7 +108,7 @@ export default function Page() {
         <h1>Mohanraj <em>&amp;</em><br/>Jacqulin Mariya</h1>
         <div className="welcome-divider"><span />✧<span /></div>
         <p className="welcome-date">22 · 11 · 2026 <b>•</b> Thiruchendur</p>
-        <button type="button" className="gold-button enter-invitation-button" onClick={enterInvitation} aria-label="Enter the wedding invitation">Enter invitation <span aria-hidden="true">↗</span></button>
+        <button type="button" className="gold-button enter-invitation-button" onClick={enterInvitation} aria-label="Enter the wedding invitation">Enter invitation <span className="inline-arrow" aria-hidden="true" /></button>
       </div>
       <div className="welcome-bottom-rule" aria-hidden="true" />
     </div>}
@@ -119,12 +136,12 @@ export default function Page() {
       <div className="hero-bottom-note"><span /> A union blessed with faith, family &amp; love <span /></div>
     </section>
 
-    <section className="event-strip" aria-label="Wedding details">{details.map(({ icon: Icon, label, value }) => label === 'Sri Shanmugar Mahal' ? <a key={label} className="event-item event-item-location" href="https://maps.app.goo.gl/LWAwPDiBuJRTTaAM9" target="_blank" rel="noreferrer" aria-label="Open directions to Sri Shanmugar Mahal in Google Maps"><div className="event-icon event-icon-pin"><MapPin size={20} strokeWidth={1.5}/></div><div><p>{label}</p><span>{value}</span><small className="venue-tap-hint">Tap pin for directions ↗</small></div></a> : <article key={label} className="event-item"><div className="event-icon"><Icon size={20} strokeWidth={1.4}/></div><div><p>{label}</p><span>{value}</span></div></article>)}</section>
+    <section className="event-strip" aria-label="Wedding details">{details.map(({ icon: Icon, label, value }) => label === 'Sri Shanmugar Mahal' ? <a key={label} className="event-item event-item-location" href="https://maps.app.goo.gl/LWAwPDiBuJRTTaAM9" target="_blank" rel="noreferrer" aria-label="Open directions to Sri Shanmugar Mahal in Google Maps"><div className="event-icon event-icon-pin"><MapPin size={20} strokeWidth={1.5}/></div><div><p>{label}</p><span>{value}</span><small className="venue-tap-hint">Tap pin for directions <span className="inline-arrow inline-arrow-small" aria-hidden="true" /></small></div></a> : <article key={label} className="event-item"><div className="event-icon"><Icon size={20} strokeWidth={1.4}/></div><div><p>{label}</p><span>{value}</span></div></article>)}</section>
 
     <section className="invitation-section">
       <div className="section-ornament"><span/>✦<span/></div><p className="section-kicker">With the love and blessings of our families</p><h2>Two hearts. One sacred beginning.</h2><p className="invitation-text">We would be honoured by your presence as we begin this beautiful journey. Your blessings will make our day complete.</p>
       <div className="invitation-card"><div className="card-inner"><div className="card-monogram">M<span>✦</span>J</div><p className="card-kicker">Together with our families</p><h3>Mohanraj <i>&amp;</i> Jacqulin Mariya</h3><p className="card-invite">request the pleasure of your company<br/>at their wedding ceremony</p><div className="card-divider"><span>✦</span></div><p className="card-date">Sunday, 22-11-2026</p><div className="card-details"><div><span>MUHURTHAM</span><strong>9:00 – 10:30 AM</strong></div><div><span>VENUE</span><strong>Sri Shanmugar Mahal</strong><small>Thiruchendur, Tamil Nadu</small></div></div></div></div>
-      <div className="section-actions"><a className="outline-button direction-button" href="https://maps.app.goo.gl/LWAwPDiBuJRTTaAM9" target="_blank" rel="noreferrer"><MapPin size={17}/> Get directions <span aria-hidden="true">↗</span></a><button className="outline-button" onClick={() => setShowWishes(true)}>Send your wishes</button></div>
+      <div className="section-actions"><a className="outline-button direction-button" href="https://maps.app.goo.gl/LWAwPDiBuJRTTaAM9" target="_blank" rel="noreferrer"><MapPin size={17}/> Get directions <span className="inline-arrow inline-arrow-small" aria-hidden="true" /></a><button className="outline-button" onClick={() => setShowWishes(true)}>Send your wishes</button></div>
     </section>
 
     <footer className="site-footer"><div className="footer-vel"><VelMark /></div><p className="footer-mantra">வேலும் மயிலும் துணை</p><p>With love and gratitude,</p><strong>Mohanraj &amp; Jacqulin Mariya</strong><small>22 · 11 · 2026 <span>✦</span> Thiruchendur</small><button className="primary-button footer-rsvp" onClick={() => setShowRsvp(true)}><Heart size={15}/> Kindly RSVP</button></footer>
